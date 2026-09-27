@@ -6,7 +6,7 @@
 
 ## 2. Project Overview
 
-SECMS brings the core enrollment workflow into a Salesforce app. Users can maintain student, course, and instructor information, create new or re-enrollment records, assign instructors through record-triggered automation, and route eligible enrollment requests for approval. Reports and a dashboard summarize student status, course enrollments, paid fees, and pending approvals.
+SECMS brings the core enrollment workflow into a Salesforce app. Users can maintain student, course, and instructor information, create new or re-enrollment records, assign instructors through record-triggered automation, create follow-up tasks for requested enrollments, and route eligible enrollment requests for approval. Reports and a dashboard summarize student status, course enrollments, paid fees, and pending approvals.
 
 The project is implemented as Salesforce metadata in a Salesforce DX source project. This README describes the configuration checked into this repository; org-specific behavior depends on deploying and configuring that metadata in Salesforce.
 
@@ -25,7 +25,7 @@ The project is implemented as Salesforce metadata in a Salesforce DX source proj
 - Custom objects for Student, Course, Instructor, and Enrollment.
 - Two enrollment record types with separate layouts.
 - Active validation rules for student email format and fee status when an enrollment is marked approved.
-- Three active record-triggered flows for setting the enrollment date, assigning instructors, and handling enrollment outcomes.
+- Four active record-triggered flows for setting the enrollment date, assigning instructors, creating follow-up tasks for requested enrollments, and handling enrollment outcomes.
 - An active Enrollment approval process assigned to the Training Manager queue.
 - Four reports and a student management dashboard.
 - Permission sets for enrollment officers, instructors, and dashboard/report editors.
@@ -91,6 +91,17 @@ A before-save flow on Enrollment runs when a record is created and sets `Enrollm
 
 An after-save flow on Enrollment runs on creation and update. It reads the related Course category and looks up an Instructor by configured instructor code: `INSTR_A` for Technical, `INSTR_B` for Language, and `INSTR_C` for Non-Technical. When a matching instructor is found, the flow updates the Enrollment's Instructor lookup. The routing uses these codes; it does not select by capacity or availability.
 
+### Create Follow-up Task
+
+An after-save flow on Enrollment runs for records whose Enrollment Status is `Requested`. It looks up an active System Administrator user and creates a Task with:
+
+- Subject: `Follow up on enrollment request.`
+- Owner: the selected Admin user.
+- WhatId: the Enrollment record.
+- ActivityDate: today + 2 days.
+
+This flow implements the follow-up Task requirement defined in the SECMS source requirements. Live-org execution still needs to be deployed and verified in the target Salesforce org.
+
 ### Enrollment Approved Action
 
 An after-save flow on Enrollment runs on update when Enrollment Status changes to Approved or Rejected. It finds the related Student; for an approved enrollment, it sets the Student's `Status__c` to Active. If the Student has an email address, it sends an outcome email based on the enrollment status. The flow metadata defines the email actions; successful delivery depends on Salesforce org email configuration.
@@ -131,7 +142,7 @@ Enrollment is configured with Private sharing. The other custom objects have the
 
 This repository contains Salesforce metadata and project tooling configuration. It does not contain Apex classes, Apex triggers, Lightning Web Components, or corresponding Apex/LWC test files. The package scripts define linting and LWC Jest commands, but no LWC source or Jest tests are included in the tracked project files.
 
-The screenshots below document application screens and workflow states. They are project artifacts, not automated test results. Verify deployment, flow execution, approval actions, email delivery, report output, and access behavior in the target Salesforce org after deployment.
+The screenshots below document application screens and workflow states. They are project artifacts, not automated test results. Verify deployment, follow-up Task creation, flow execution, approval actions, email delivery, report output, and access behavior in the target Salesforce org after deployment.
 
 ## 15. Screenshots
 
