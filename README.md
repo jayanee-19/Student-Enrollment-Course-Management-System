@@ -1,57 +1,216 @@
-# Salesforce DX Project
+# Student Enrollment & Course Management System (SECMS)
 
-Salesforce DX is a development approach that brings source-driven development, team collaboration, and continuous integration to the Salesforce Platform. Instead of working directly in an org through a web browser, you work with metadata as source files in a local DX project, track changes in version control, and deploy through automated processes.
+## 1. Project Title
 
-This project template gets you started with the tools and structure you need to build Salesforce applications using source control, scratch orgs, and the Salesforce CLI.
+**Student Enrollment & Course Management System (SECMS)** is a Salesforce Lightning application for managing student, course, instructor, and enrollment records.
 
-## Prerequisites
+## 2. Project Overview
 
-Before you start, make sure you have:
+SECMS brings the core enrollment workflow into a Salesforce app. Users can maintain student, course, and instructor information, create new or re-enrollment records, assign instructors through record-triggered automation, and route eligible enrollment requests for approval. Reports and a dashboard summarize student status, course enrollments, paid fees, and pending approvals.
 
-- **Salesforce CLI** - Download from [developer.salesforce.com/tools/salesforcecli](https://developer.salesforce.com/tools/salesforcecli). See [Install Salesforce CLI](https://developer.salesforce.com/docs/atlas.en-us.sfdx_setup.meta/sfdx_setup/sfdx_setup_install_cli.htm) for details.
-- **VS Code with Salesforce Extension Pack** - See [Installation Instructions](https://developer.salesforce.com/docs/platform/sfvscode-extensions/guide/install.html) for details. Includes the Agentforce Vibes extension.
-- **A development org** - Sign up for a free Developer Edition org [here](https://developer.salesforce.com/signup).
-- **Dev Hub enabled** (optional, required to create scratch orgs) - You can enable Dev Hub in your development org under Setup > Dev Hub.  See [Provide Developers Access to Salesforce DX Tools](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_setup_dx_tools.htm).
+The project is implemented as Salesforce metadata in a Salesforce DX source project. This README describes the configuration checked into this repository; org-specific behavior depends on deploying and configuring that metadata in Salesforce.
 
-## Project Structure
+## 3. Objectives
 
-Your DX project follows this structure:
+- Organize student, course, instructor, and enrollment information in related Salesforce records.
+- Support new enrollment and re-enrollment record entry.
+- Automate enrollment dates and category-based instructor assignment.
+- Provide an approval path for eligible, fee-paid enrollment requests.
+- Present enrollment and fee information through Salesforce reports and a dashboard.
+- Demonstrate Salesforce configuration, declarative automation, access controls, and source-based deployment.
 
-- **`force-app/main/default/`** - Your metadata source files live in this default package directory. You can configure additional package directories in the `sfdx-project.json` file.
-- **`config/`** - Scratch org definitions and project settings
-- **`scripts/`** - Automation scripts for common tasks
-- **`sfdx-project.json`** - Project manifest that defines package directories, namespace, API version, and other project-level settings
+## 4. Key Features
 
-See [Salesforce DX Project Configuration](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_ws_config.htm).
+- Lightning app with navigation tabs for Home, Students, Courses, Instructors, Enrollments, Reports, Dashboards, and Tasks.
+- Custom objects for Student, Course, Instructor, and Enrollment.
+- Two enrollment record types with separate layouts.
+- Active validation rules for student email format and fee status when an enrollment is marked approved.
+- Three active record-triggered flows for setting the enrollment date, assigning instructors, and handling enrollment outcomes.
+- An active Enrollment approval process assigned to the Training Manager queue.
+- Four reports and a student management dashboard.
+- Permission sets for enrollment officers, instructors, and dashboard/report editors.
 
-## Get Started
+## 5. Salesforce Objects
 
-Ready to start developing? The [Get Started with Salesforce DX](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/sfdx_dev_get_started_dx.htm) guide walks you through your first project, from creating a scratch org to creating a simple Apex class or LWC to deploying your code to a sandbox.
+All four business records are custom Salesforce objects.
 
-## Common Salesforce CLI Commands
+### Student
 
-Here are common CLI commands that you'll use the most:
+`Student__c` stores student information. Configured fields include registration number, serial number, date of birth, address, email, phone, student status, enrollment status, and fees paid.
 
-- `sf org login web`: Authorize an org
-- `sf org open`: Open your org in a browser
-- `sf org create scratch`: Create a scratch org
-- `sf project deploy start`: Deploy metadata to your org
-- `sf project retrieve start`: Retrieve metadata from your org
-- `sf template generate <artifact>`: Scaffold new components, such as Apex classes and triggers, LWC components, Lightning apps, and more
-- `sf apex <command>`: Run Apex tests, run anonymous Apex blocks, and view logs
-- `sf data <command>`: Work with test data
-- `sf alias <command>`: Manage org aliases
-- `sf config <command>`: Configure CLI settings
+### Course
 
-## Use Agentforce Vibes to Build Lightning Apps
+`course__c` stores course information, including description, department, category, duration, fees, and an optional Student lookup. Course categories configured in the metadata are Technical, Language, and Non-Technical.
 
-Transform your ideas into custom Lightning apps that extend CRM workflows directly in Lightning Experience. Through natural conversations with Agentforce Vibes, implement custom objects and fields, complex business logic, and dynamic UI components. See [Build a Lightning App Using Agentforce Vibes](https://developer.salesforce.com/docs/platform/einstein-for-devs/guide/lexapp-overview.html).
+### Instructor
 
-## Additional Resources
+`Instructor__c` stores instructor information, including instructor code, email, phone, and expertise.
 
-- [Agentforce Vibes Developer Guide](https://developer.salesforce.com/docs/platform/einstein-for-devs/guide/einstein-overview.html)
-- [Salesforce CLI Installation Guide](https://developer.salesforce.com/docs/atlas.en-us.sfdx_setup.meta/sfdx_setup/sfdx_setup_intro.htm)
-- [Salesforce DX Developer Guide](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta/sfdx_dev/)
-- [Salesforce CLI Command Reference](https://developer.salesforce.com/docs/atlas.en-us.sfdx_cli_reference.meta/sfdx_cli_reference/)
-- [Salesforce CLI Plugin Development Guide](https://developer.salesforce.com/docs/platform/salesforce-cli-plugin/guide/conceptual-overview.html)
-- [Salesforce VS Code Extensions Documentation](https://developer.salesforce.com/tools/vscode/)
+### Enrollment
+
+`Enrollment__c` records a student's course enrollment. Fields include Student, Course, Instructor, enrollment date, enrollment status, fees paid, total amount, comments, previous enrollment, and re-enrollment reason. Enrollment status values are Requested, Approved, and Rejected.
+
+## 6. Object Relationships
+
+The configured relationships are lookups:
+
+- An Enrollment can reference one Student through `Enrollment__c.Student__c`; a Student can be referenced by multiple Enrollment records.
+- An Enrollment can reference one Course through `Enrollment__c.Course__c`; a Course can be referenced by multiple Enrollment records.
+- An Enrollment can reference one Instructor through `Enrollment__c.Instructor__c`; an Instructor can be referenced by multiple Enrollment records.
+- An Enrollment can reference a prior Enrollment through `Enrollment__c.Previous_Enrollment__c`, supporting a link to an earlier record.
+- A Course can optionally reference a Student through `course__c.Student__c`.
+
+These fields are lookup relationships in the metadata, not master-detail relationships.
+
+## 7. Record Types
+
+Both active record types are defined on `Enrollment__c`. Each uses Requested as the default Enrollment Status value and has its own page layout.
+
+- **New Enrollment** (`New_Enrollment`) — for a new enrollment request; uses the New Enrollment layout.
+- **Re-Enrollment** (`Re_Enrollment`) — for a returning enrollment; uses the Re-Enrollment layout and includes previous-enrollment and re-enrollment-reason fields in the object configuration.
+
+## 8. Validation Rules
+
+The repository defines these active validation rules:
+
+- **Student email domain:** `Student__c.e_mail__c` must contain `@student.edu`. The error is displayed on the email field.
+- **Student fees before approval:** prevents a Student record from having Enrollment Status `Approved` while `Fees_paid__c` is false.
+- **Enrollment fees before approval:** prevents an Enrollment record from having Enrollment Status `Approved` while `Fees_Paid__c` is false.
+
+The Student-level fee rule checks the Student status field; the Enrollment-level rule checks the Enrollment status field.
+
+## 9. Flows & Automation
+
+The following active flows are included in the source metadata:
+
+### Set Enrollment Date
+
+A before-save flow on Enrollment runs when a record is created and sets `Enrollment_Date__c` to the current date.
+
+### Auto Assign Instructor
+
+An after-save flow on Enrollment runs on creation and update. It reads the related Course category and looks up an Instructor by configured instructor code: `INSTR_A` for Technical, `INSTR_B` for Language, and `INSTR_C` for Non-Technical. When a matching instructor is found, the flow updates the Enrollment's Instructor lookup. The routing uses these codes; it does not select by capacity or availability.
+
+### Enrollment Approved Action
+
+An after-save flow on Enrollment runs on update when Enrollment Status changes to Approved or Rejected. It finds the related Student; for an approved enrollment, it sets the Student's `Status__c` to Active. If the Student has an email address, it sends an outcome email based on the enrollment status. The flow metadata defines the email actions; successful delivery depends on Salesforce org email configuration.
+
+## 10. Approval Process
+
+The active approval process is **Approval Enrollment Request** on Enrollment. Its entry criteria require Enrollment Status `Requested` and `Fees_Paid__c = TRUE`. The record owner may submit the request, which is assigned to the **Training Manager** queue. Approval sets Enrollment Status to Approved and locks the record; rejection sets the status to Rejected. Approval history is enabled, and recall is allowed. The process allows editing by administrators while pending.
+
+## 11. Reports
+
+The `SECMS_Reports` folder contains these reports:
+
+- **Students by Status** — groups student records by student status and includes email and phone.
+- **Enrollments by Course** — groups enrollment records by course and includes student and enrollment status.
+- **Revenue Report Fees Paid** — filters to enrollments marked Fees Paid and summarizes Total Amount by course.
+- **Pending Enrollment Approvals** — filters to Requested enrollments and includes student, course, total amount, owner, and created date.
+
+## 12. Dashboard
+
+The **Student Management Dashboard** is configured as a logged-in-user dashboard. It contains four components based on the reports above:
+
+- Donut chart: Students by Status.
+- Bar chart: Enrollments by Course.
+- Gauge: Revenue Report - Fees Paid.
+- Table: Pending Enrollment Approvals.
+
+## 13. Security
+
+The project includes an Admin profile and three permission sets:
+
+- **Enrollment Officer Access** grants create/read/edit access to Enrollment records and read access to Students and Courses, with field-level permissions and visibility to both Enrollment record types.
+- **Instructor Enrollment Read** grants read-only object and field access to Enrollment records.
+- **Dashboard Editor** grants report and dashboard creation/customization and report-running permissions.
+
+Enrollment is configured with Private sharing. The other custom objects have their own sharing settings in metadata. Assign profiles and permission sets according to the target org's access policy; permission-set definitions alone do not assign them to users.
+
+## 14. Testing & Verification
+
+This repository contains Salesforce metadata and project tooling configuration. It does not contain Apex classes, Apex triggers, Lightning Web Components, or corresponding Apex/LWC test files. The package scripts define linting and LWC Jest commands, but no LWC source or Jest tests are included in the tracked project files.
+
+The screenshots below document application screens and workflow states. They are project artifacts, not automated test results. Verify deployment, flow execution, approval actions, email delivery, report output, and access behavior in the target Salesforce org after deployment.
+
+## 15. Screenshots
+
+The following screenshots are stored in [`screenshots/`](screenshots/):
+
+1. [SECMS Home](screenshots/01-secsm-home.png)
+2. [Student Record](screenshots/02-student-record.png)
+3. [Student Validation](screenshots/03-student-validation.png)
+4. [Course Record](screenshots/04-course-record.png)
+5. [Instructor Record](screenshots/05-instructor-record.png)
+6. [New Enrollment](screenshots/06-new-enrollment.png)
+7. [Enrollment Record](screenshots/07-enrollment-record.png)
+8. [Enrollment Date Flow](screenshots/08-enrollment-date-flow.png)
+9. [Instructor Assignment](screenshots/09-instructor-assignment.png)
+10. [Submit for Approval](screenshots/10-submit-approval.png)
+11. [Approval History](screenshots/11-approval-history.png)
+12. [Approved Enrollment](screenshots/12-approved-enrollment.png)
+13. [Rejected Enrollment](screenshots/13-rejected-enrollment.png)
+14. [Reports](screenshots/14-reports.png)
+15. [Dashboard](screenshots/15-dashboard.png)
+
+## 16. Project Structure
+
+```text
+.
+├── config/
+│   └── project-scratch-def.json
+├── force-app/main/default/
+│   ├── applications/       # SECMS Lightning app
+│   ├── approvalProcesses/  # Enrollment approval process
+│   ├── dashboards/         # Student management dashboard
+│   ├── flows/              # Record-triggered flows
+│   ├── layouts/            # Object and record-type layouts
+│   ├── objects/             # Custom objects, fields, rules, record types
+│   ├── permissionsets/     # Role-focused permission sets
+│   ├── profiles/           # Admin profile
+│   ├── queues/             # Training Manager queue
+│   ├── reports/             # SECMS reports
+│   ├── tabs/                # Custom object tabs
+│   └── workflows/           # Enrollment status field updates
+├── scripts/                 # Sample SOQL and Apex script
+├── screenshots/             # Project screenshots
+├── package.json             # JavaScript development tooling scripts
+└── sfdx-project.json        # Salesforce DX project configuration
+```
+
+## 17. Technologies Used
+
+- Salesforce Platform and Lightning Experience.
+- Salesforce DX source format and Salesforce CLI (`sf`).
+- Salesforce custom objects, fields, validation rules, record types, layouts, reports, dashboard, approval process, queue, profile, permission sets, and record-triggered flows.
+- Node.js/npm project tooling configured for ESLint, Prettier, and Salesforce LWC Jest. The repository currently has no LWC source or associated Jest tests.
+
+## 18. Setup / Deployment
+
+### Prerequisites
+
+- Salesforce CLI installed.
+- Access to a Salesforce org that can receive the included metadata.
+- Node.js/npm if using the package scripts.
+
+### Deploy to an authorized org
+
+From the project root, authorize the target org and deploy the default package directory:
+
+```bash
+sf org login web --alias secms-org
+sf project deploy start --source-dir force-app --target-org secms-org
+```
+
+The scratch-org definition in `config/project-scratch-def.json` specifies a Developer Edition org named `Demo company` with Lightning Experience enabled. For a scratch org, authenticate to a Dev Hub and run:
+
+```bash
+sf org create scratch --definition-file config/project-scratch-def.json --alias secms-scratch --set-default --duration-days 7
+sf project deploy start --source-dir force-app --target-org secms-scratch
+```
+
+After deployment, confirm the flows and approval process are active, configure or verify user access and email settings in the org, assign the needed permission sets, and verify the app and its reports using representative records. The repository's package scripts can be installed with `npm install`; `npm test` invokes the configured LWC Jest command, but no LWC tests are currently included.
+
+## 19. GitHub Repository
+
+[Student Enrollment & Course Management System on GitHub](https://github.com/jayanee-19/Student-Enrollment-Course-Management-System)
