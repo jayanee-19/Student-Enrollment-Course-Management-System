@@ -26,7 +26,7 @@
         <inputAssignments>
             <field>OwnerId</field>
             <value>
-                <elementReference>Get_Admin_User.Id</elementReference>
+                <stringValue>005gK00006Otq0wQAB</stringValue>
             </value>
         </inputAssignments>
         <inputAssignments>
@@ -44,34 +44,9 @@
         <object>Task</object>
         <storeOutputAutomatically>true</storeOutputAutomatically>
     </recordCreates>
-    <recordLookups>
-        <name>Get_Admin_User</name>
-        <label>Get Admin User</label>
-        <locationX>182</locationX>
-        <locationY>158</locationY>
-        <filterLogic>and</filterLogic>
-        <filters>
-            <field>Profile.Name</field>
-            <operator>EqualTo</operator>
-            <value>
-                <stringValue>System Administrator</stringValue>
-            </value>
-        </filters>
-        <filters>
-            <field>IsActive</field>
-            <operator>EqualTo</operator>
-            <value>
-                <booleanValue>true</booleanValue>
-            </value>
-        </filters>
-        <getFirstRecordOnly>true</getFirstRecordOnly>
-        <object>User</object>
-        <queriedFields>Id</queriedFields>
-        <storeOutputAutomatically>true</storeOutputAutomatically>
-    </recordLookups>
     <start>
         <connector>
-            <targetReference>Get_Admin_User</targetReference>
+            <targetReference>Create_Followup_Task</targetReference>
         </connector>
         <filterLogic>and</filterLogic>
         <filters>

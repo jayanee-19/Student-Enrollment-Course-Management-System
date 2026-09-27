@@ -9,6 +9,9 @@
     <fieldPermissions><editable>true</editable><field>Enrollment__c.Re_Enrollment_Reason__c</field><readable>true</readable></fieldPermissions>
     <fieldPermissions><editable>true</editable><field>Enrollment__c.Student__c</field><readable>true</readable></fieldPermissions>
     <fieldPermissions><editable>true</editable><field>Enrollment__c.Total_Amount__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>false</editable><field>Enrollment__c.Student_Name__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>false</editable><field>Enrollment__c.Course_Name__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>false</editable><field>Enrollment__c.Instructor_Name__c</field><readable>true</readable></fieldPermissions>
     <fieldPermissions><editable>false</editable><field>Student__c.Enrollment_Status__c</field><readable>true</readable></fieldPermissions>
     <fieldPermissions><editable>false</editable><field>Student__c.Status__c</field><readable>true</readable></fieldPermissions>
     <fieldPermissions><editable>false</editable><field>Student__c.address__c</field><readable>true</readable></fieldPermissions>

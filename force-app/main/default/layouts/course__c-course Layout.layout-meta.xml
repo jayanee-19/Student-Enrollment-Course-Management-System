@@ -6,5 +6,15 @@
         <layoutColumns><layoutItems><behavior>Edit</behavior><field>Category__c</field></layoutItems><layoutItems><behavior>Edit</behavior><field>FEES__c</field></layoutItems><layoutItems><behavior>Edit</behavior><field>Description__c</field></layoutItems></layoutColumns>
         <style>TwoColumnsTopToBottom</style>
     </layoutSections>
-    <relatedLists><fields>NAME</fields><relatedList>Enrollment__c.Course__c</relatedList></relatedLists>
+    <relatedLists>
+        <fields>NAME</fields>
+        <fields>Student_Name__c</fields>
+        <fields>Course_Name__c</fields>
+        <fields>Instructor_Name__c</fields>
+        <fields>Enrollment_Date__c</fields>
+        <fields>Enrollment_Status__c</fields>
+        <fields>Fees_Paid__c</fields>
+        <fields>Total_Amount__c</fields>
+        <relatedList>Enrollment__c.Course__c</relatedList>
+    </relatedLists>
 </Layout>

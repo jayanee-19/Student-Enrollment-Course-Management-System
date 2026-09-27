@@ -25,7 +25,9 @@ The project is implemented as Salesforce metadata in a Salesforce DX source proj
 - Custom objects for Student, Course, Instructor, and Enrollment.
 - Two enrollment record types with separate layouts.
 - Active validation rules for student email format and fee status when an enrollment is marked approved.
-- Four active record-triggered flows for setting the enrollment date, assigning instructors, creating follow-up tasks for requested enrollments, and handling enrollment outcomes.
+- Four active record-triggered flows: setting the enrollment date, assigning instructors, handling enrollment outcomes, and creating the Requested-enrollment follow-up Task.
+- `Create_Followup_Task` creates a follow-up Task for Requested Enrollments, assigned to the SECMS Admin user and due two days later.
+- Enrollment related lists on Student, Course, and Instructor layouts with enrollment names, linked Student/Course/Instructor names, date, status, fee state, and amount.
 - An active Enrollment approval process assigned to the Training Manager queue.
 - Four reports and a student management dashboard.
 - Permission sets for enrollment officers, instructors, and dashboard/report editors.
@@ -48,7 +50,7 @@ All four business records are custom Salesforce objects.
 
 ### Enrollment
 
-`Enrollment__c` records a student's course enrollment. Fields include Student, Course, Instructor, enrollment date, enrollment status, fees paid, total amount, comments, previous enrollment, and re-enrollment reason. Enrollment status values are Requested, Approved, and Rejected.
+`Enrollment__c` records a student's course enrollment. Fields include Student, Course, Instructor, enrollment date, enrollment status, fees paid, total amount, comments, previous enrollment, and re-enrollment reason. Read-only formula fields `Student_Name__c`, `Course_Name__c`, and `Instructor_Name__c` expose linked record names for related-list columns. Enrollment status values are Requested, Approved, and Rejected.
 
 ## 6. Object Relationships
 
@@ -59,6 +61,7 @@ The configured relationships are lookups:
 - An Enrollment can reference one Instructor through `Enrollment__c.Instructor__c`; an Instructor can be referenced by multiple Enrollment records.
 - An Enrollment can reference a prior Enrollment through `Enrollment__c.Previous_Enrollment__c`, supporting a link to an earlier record.
 - A Course can optionally reference a Student through `course__c.Student__c`.
+- Student, Course, and Instructor layouts display an Enrollment related list with Enrollment Name, Student, Course, Instructor, Enrollment Date, Enrollment Status, Fees Paid, and Total Amount. The three linked record name columns use read-only Enrollment formula fields.
 
 These fields are lookup relationships in the metadata, not master-detail relationships.
 
@@ -93,14 +96,7 @@ An after-save flow on Enrollment runs on creation and update. It reads the relat
 
 ### Create Follow-up Task
 
-An after-save flow on Enrollment runs for records whose Enrollment Status is `Requested`. It looks up an active System Administrator user and creates a Task with:
-
-- Subject: `Follow up on enrollment request.`
-- Owner: the selected Admin user.
-- WhatId: the Enrollment record.
-- ActivityDate: today + 2 days.
-
-This flow implements the follow-up Task requirement defined in the SECMS source requirements. Live-org execution still needs to be deployed and verified in the target Salesforce org.
+The active flow API name is `Create_Followup_Task`. It runs after an Enrollment is created or updated when `Enrollment_Status__c` is `Requested`. The Task subject is `Follow up on enrollment request.`, the owner is Jayanee R (the active SECMS System Administrator), `WhatId` is the Enrollment Id, and `ActivityDate` is `TODAY() + 2`. Enrollment has Activities enabled so a Task can be related to it. The Task owner Id is specific to the connected SECMS org and must be updated when deploying this Flow to another org.
 
 ### Enrollment Approved Action
 
@@ -130,10 +126,10 @@ The **Student Management Dashboard** is configured as a logged-in-user dashboard
 
 ## 13. Security
 
-The project includes an Admin profile and three permission sets:
+The project includes an Admin profile and three permission sets. Student and Course sharing defaults are Public Read/Write, and Enrollment sharing is Private; a live metadata retrieve confirmed these settings before and after deployment.
 
 - **Enrollment Officer Access** grants create/read/edit access to Enrollment records and read access to Students and Courses, with field-level permissions and visibility to both Enrollment record types.
-- **Instructor Enrollment Read** grants read-only object and field access to Enrollment records.
+- **Instructor Enrollment Read** grants read-only object and field access to Enrollment records, including the linked-name formula fields.
 - **Dashboard Editor** grants report and dashboard creation/customization and report-running permissions.
 
 Enrollment is configured with Private sharing. The other custom objects have their own sharing settings in metadata. Assign profiles and permission sets according to the target org's access policy; permission-set definitions alone do not assign them to users.
@@ -142,7 +138,11 @@ Enrollment is configured with Private sharing. The other custom objects have the
 
 This repository contains Salesforce metadata and project tooling configuration. It does not contain Apex classes, Apex triggers, Lightning Web Components, or corresponding Apex/LWC test files. The package scripts define linting and LWC Jest commands, but no LWC source or Jest tests are included in the tracked project files.
 
-The screenshots below document application screens and workflow states. They are project artifacts, not automated test results. Verify deployment, follow-up Task creation, flow execution, approval actions, email delivery, report output, and access behavior in the target Salesforce org after deployment.
+The live Flow deployment succeeded as deployment `0AfgK00000UdfmnSAB`. Test Enrollment `CODEX_FLOW_FINAL_REQUESTED_20260927` (`a06gK00000P1KpVQAV`) created Task `00TgK00000CYFCDUA5`; the live Task query confirmed the exact subject, owner Jayanee R (System Administrator), matching `WhatId`, and ActivityDate `2026-09-29` (Salesforce `TODAY() + 2`). Test Enrollment `CODEX_FLOW_FINAL_NEGATIVE_20260927` (`a06gK00000P1KvxQAF`) had zero Tasks while Rejected; changing it to Requested created the follow-up Task, verifying both trigger paths. Raw results are under `codex-output/deployments/followup-task-flow-deployment.txt` and `codex-output/tests/final-flow-requested-enrollment-create-response.txt`, `final-flow-requested-task-verification.txt`, `final-flow-nonrequested-verification.txt`, and `final-flow-update-to-requested-verification.txt`. The three parent layouts were retrieved and their configured related-list columns and formula values were verified in the earlier live evidence under `codex-output/audit/` and `codex-output/tests/`.
+
+The screenshots below are the original 15 project screenshots and document existing app screens and workflow states. No new UI screenshot was captured for the Task and expanded parent related lists in this environment. Email delivery and effective access under a separate instructor user were not directly tested.
+
+The PDF mentions seat availability and Apex trigger functionality but does not specify the required capacity data/business rule or trigger behavior. Neither was invented or implemented. No duplicate-course-registration rule was added because the PDF does not define its matching criteria. Instructor-specific Enrollment access through owner assignment remains unimplemented: the optional PDF approach requires an Instructor-to-User mapping and ownership rule, which are not configured. These limits are recorded in `codex-output/SECMS_Final_Report.txt`.
 
 ## 15. Screenshots
 
@@ -193,6 +193,7 @@ The following screenshots are stored in [`screenshots/`](screenshots/):
 - Salesforce Platform and Lightning Experience.
 - Salesforce DX source format and Salesforce CLI (`sf`).
 - Salesforce custom objects, fields, validation rules, record types, layouts, reports, dashboard, approval process, queue, profile, permission sets, and record-triggered flows.
+- Salesforce Tasks related to Enrollment records and formula fields used to display linked Student, Course, and Instructor names.
 - Node.js/npm project tooling configured for ESLint, Prettier, and Salesforce LWC Jest. The repository currently has no LWC source or associated Jest tests.
 
 ## 18. Setup / Deployment

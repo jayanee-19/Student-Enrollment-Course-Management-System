@@ -8,6 +8,21 @@
   <custom>false</custom>
   <fieldPermissions>
     <editable>false</editable>
+    <field>Enrollment__c.Student_Name__c</field>
+    <readable>true</readable>
+  </fieldPermissions>
+  <fieldPermissions>
+    <editable>false</editable>
+    <field>Enrollment__c.Course_Name__c</field>
+    <readable>true</readable>
+  </fieldPermissions>
+  <fieldPermissions>
+    <editable>false</editable>
+    <field>Enrollment__c.Instructor_Name__c</field>
+    <readable>true</readable>
+  </fieldPermissions>
+  <fieldPermissions>
+    <editable>false</editable>
     <field>Enrollment__c.Comments__c</field>
     <readable>false</readable>
   </fieldPermissions>

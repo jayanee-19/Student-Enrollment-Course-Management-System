@@ -6,5 +6,15 @@
         <layoutColumns><layoutItems><behavior>Edit</behavior><field>e_mail__c</field></layoutItems><layoutItems><behavior>Edit</behavior><field>phone__c</field></layoutItems><layoutItems><behavior>Edit</behavior><field>Enrollment_Status__c</field></layoutItems></layoutColumns>
         <style>TwoColumnsTopToBottom</style>
     </layoutSections>
-    <relatedLists><fields>NAME</fields><relatedList>Enrollment__c.Student__c</relatedList></relatedLists>
+    <relatedLists>
+        <fields>NAME</fields>
+        <fields>Student_Name__c</fields>
+        <fields>Course_Name__c</fields>
+        <fields>Instructor_Name__c</fields>
+        <fields>Enrollment_Date__c</fields>
+        <fields>Enrollment_Status__c</fields>
+        <fields>Fees_Paid__c</fields>
+        <fields>Total_Amount__c</fields>
+        <relatedList>Enrollment__c.Student__c</relatedList>
+    </relatedLists>
 </Layout>
