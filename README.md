@@ -142,7 +142,7 @@ The live Flow deployment succeeded as deployment `0AfgK00000UdfmnSAB`. Test Enro
 
 The screenshots below are the original 15 project screenshots and document existing app screens and workflow states. No new UI screenshot was captured for the Task and expanded parent related lists in this environment. Email delivery and effective access under a separate instructor user were not directly tested.
 
-The PDF mentions seat availability and Apex trigger functionality but does not specify the required capacity data/business rule or trigger behavior. Neither was invented or implemented. No duplicate-course-registration rule was added because the PDF does not define its matching criteria. Instructor-specific Enrollment access through owner assignment remains unimplemented: the optional PDF approach requires an Instructor-to-User mapping and ownership rule, which are not configured. These limits are recorded in `codex-output/SECMS_Final_Report.txt`.
+The full project PDF was reviewed. Its core objects, app, layouts, validations, flows, approval process, reports, dashboard, sharing defaults, and screenshots are represented in this project. The PDF also names duplicate-course prevention, seat-availability checks, Apex-trigger confirmation/record updates, and instructor access to assigned records. Those items remain incomplete because the PDF does not define duplicate matching across re-enrollments, course capacity and seat reservation rules, trigger events/acceptance behavior, or an Instructor-to-User mapping. Instructor-only ownership is shown as an optional setup in the PDF. The complete requirement-by-requirement audit and exact validation result are in [the final project report](docs/SECMS_Final_Report.md).
 
 ## 15. Screenshots
 
@@ -184,6 +184,7 @@ The following screenshots are stored in [`screenshots/`](screenshots/):
 │   ├── tabs/                # Custom object tabs
 │   └── workflows/           # Enrollment status field updates
 ├── screenshots/             # Project screenshots
+├── docs/                    # PDF requirement audit and final report
 ├── package.json             # JavaScript development tooling scripts
 └── sfdx-project.json        # Salesforce DX project configuration
 ```
