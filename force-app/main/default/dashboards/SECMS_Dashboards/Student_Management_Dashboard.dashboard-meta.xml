@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Dashboard xmlns="http://soap.sforce.com/2006/04/metadata">
+    <backgroundEndColor>#FFFFFF</backgroundEndColor>
+    <backgroundFadeDirection>LeftToRight</backgroundFadeDirection>
+    <backgroundStartColor>#FFFFFF</backgroundStartColor>
+    <dashboardType>LoggedInUser</dashboardType>
+    <description>Student enrollment status, course enrollment volume, paid revenue, and pending approvals.</description>
+    <isGridLayout>false</isGridLayout>
+    <leftSection>
+        <columnSize>Medium</columnSize>
+        <components>
+            <autoselectColumnsFromReport>true</autoselectColumnsFromReport>
+            <chartAxisRange>Auto</chartAxisRange>
+            <componentType>Donut</componentType>
+            <drillEnabled>false</drillEnabled>
+            <drillToDetailEnabled>false</drillToDetailEnabled>
+            <enableHover>false</enableHover>
+            <expandOthers>false</expandOthers>
+            <groupingSortProperties/>
+            <report>SECMS_Reports/Students_by_Status</report>
+            <showPercentage>false</showPercentage>
+            <showTotal>false</showTotal>
+            <showValues>false</showValues>
+            <sortBy>RowValueDescending</sortBy>
+            <sortLegendValues>false</sortLegendValues>
+            <title>Students by Status</title>
+            <useReportChart>false</useReportChart>
+        </components>
+        <components>
+            <autoselectColumnsFromReport>true</autoselectColumnsFromReport>
+            <chartAxisRange>Auto</chartAxisRange>
+            <componentType>Bar</componentType>
+            <drillEnabled>false</drillEnabled>
+            <drillToDetailEnabled>false</drillToDetailEnabled>
+            <enableHover>false</enableHover>
+            <expandOthers>false</expandOthers>
+            <groupingSortProperties/>
+            <report>SECMS_Reports/Enrollments_by_Course</report>
+            <showPercentage>false</showPercentage>
+            <showPicturesOnCharts>false</showPicturesOnCharts>
+            <showValues>false</showValues>
+            <sortBy>RowValueDescending</sortBy>
+            <sortLegendValues>false</sortLegendValues>
+            <title>Enrollments by Course</title>
+            <useReportChart>false</useReportChart>
+        </components>
+    </leftSection>
+    <owner>jayangtmc.2a9ec08ece7b@agentforce.com</owner>
+    <rightSection>
+        <columnSize>Medium</columnSize>
+        <components>
+            <autoselectColumnsFromReport>true</autoselectColumnsFromReport>
+            <componentType>Gauge</componentType>
+            <groupingSortProperties/>
+            <indicatorHighColor>#00716B</indicatorHighColor>
+            <indicatorLowColor>#C23934</indicatorLowColor>
+            <indicatorMiddleColor>#FFB75D</indicatorMiddleColor>
+            <report>SECMS_Reports/Revenue_Report_Fees_Paid</report>
+            <showPercentage>false</showPercentage>
+            <showRange>false</showRange>
+            <showTotal>false</showTotal>
+            <showValues>false</showValues>
+            <title>Revenue Report - Fees Paid</title>
+        </components>
+        <components>
+            <autoselectColumnsFromReport>true</autoselectColumnsFromReport>
+            <componentType>Table</componentType>
+            <drillEnabled>false</drillEnabled>
+            <drillToDetailEnabled>false</drillToDetailEnabled>
+            <groupingSortProperties/>
+            <indicatorHighColor>#00716B</indicatorHighColor>
+            <indicatorLowColor>#C23934</indicatorLowColor>
+            <indicatorMiddleColor>#FFB75D</indicatorMiddleColor>
+            <report>SECMS_Reports/Pending_Enrollment_Approvals</report>
+            <showPicturesOnTables>true</showPicturesOnTables>
+            <sortBy>RowLabelAscending</sortBy>
+            <title>Pending Enrollment Approvals</title>
+        </components>
+    </rightSection>
+    <runningUser>jayangtmc.2a9ec08ece7b@agentforce.com</runningUser>
+    <textColor>#000000</textColor>
+    <title>Student Management Dashboard</title>
+    <titleColor>#000000</titleColor>
+    <titleSize>12</titleSize>
+</Dashboard>

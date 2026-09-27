@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>67.0</apiVersion>
+    <assignments>
+        <name>Set_Enrollment_Date</name>
+        <label>Set Enrollment Date</label>
+        <locationX>176</locationX>
+        <locationY>158</locationY>
+        <assignmentItems>
+            <assignToReference>$Record.Enrollment_Date__c</assignToReference>
+            <operator>Assign</operator>
+            <value>
+                <elementReference>$Flow.CurrentDate</elementReference>
+            </value>
+        </assignmentItems>
+    </assignments>
+    <environments>Default</environments>
+    <interviewLabel>Set Enrollment Date {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Set Enrollment Date</label>
+    <processType>AutoLaunchedFlow</processType>
+    <start>
+        <connector>
+            <targetReference>Set_Enrollment_Date</targetReference>
+        </connector>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <object>Enrollment__c</object>
+        <recordTriggerType>Create</recordTriggerType>
+        <triggerType>RecordBeforeSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>67.0</apiVersion>
+    <decisions>
+        <name>Route_By_Course_Category</name>
+        <label>Route by Course Category</label>
+        <locationX>176</locationX>
+        <locationY>158</locationY>
+        <defaultConnectorLabel>Other Category</defaultConnectorLabel>
+        <rules>
+            <name>Technical</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions><leftValueReference>Get_Course.Category__c</leftValueReference><operator>EqualTo</operator><rightValue><stringValue>Technical</stringValue></rightValue></conditions>
+            <connector><targetReference>Get_Technical_Instructor</targetReference></connector>
+            <label>Technical</label>
+        </rules>
+        <rules>
+            <name>Language</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions><leftValueReference>Get_Course.Category__c</leftValueReference><operator>EqualTo</operator><rightValue><stringValue>Language</stringValue></rightValue></conditions>
+            <connector><targetReference>Get_Language_Instructor</targetReference></connector>
+            <label>Language</label>
+        </rules>
+        <rules>
+            <name>Non_Technical</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions><leftValueReference>Get_Course.Category__c</leftValueReference><operator>EqualTo</operator><rightValue><stringValue>Non-Technical</stringValue></rightValue></conditions>
+            <connector><targetReference>Get_Non_Technical_Instructor</targetReference></connector>
+            <label>Non-Technical</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Technical_Instructor_Found</name>
+        <label>Technical Instructor Found</label>
+        <locationX>440</locationX>
+        <locationY>50</locationY>
+        <defaultConnectorLabel>No Matching Instructor</defaultConnectorLabel>
+        <rules>
+            <name>Found_Technical</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions><leftValueReference>Get_Technical_Instructor.Id</leftValueReference><operator>IsNull</operator><rightValue><booleanValue>false</booleanValue></rightValue></conditions>
+            <connector><targetReference>Assign_Technical_Instructor</targetReference></connector>
+            <label>Found</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Language_Instructor_Found</name>
+        <label>Language Instructor Found</label>
+        <locationX>440</locationX>
+        <locationY>250</locationY>
+        <defaultConnectorLabel>No Matching Instructor</defaultConnectorLabel>
+        <rules>
+            <name>Found_Language</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions><leftValueReference>Get_Language_Instructor.Id</leftValueReference><operator>IsNull</operator><rightValue><booleanValue>false</booleanValue></rightValue></conditions>
+            <connector><targetReference>Assign_Language_Instructor</targetReference></connector>
+            <label>Found</label>
+        </rules>
+    </decisions>
+    <decisions>
+        <name>Non_Technical_Instructor_Found</name>
+        <label>Non-Technical Instructor Found</label>
+        <locationX>440</locationX>
+        <locationY>450</locationY>
+        <defaultConnectorLabel>No Matching Instructor</defaultConnectorLabel>
+        <rules>
+            <name>Found_Non_Technical</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions><leftValueReference>Get_Non_Technical_Instructor.Id</leftValueReference><operator>IsNull</operator><rightValue><booleanValue>false</booleanValue></rightValue></conditions>
+            <connector><targetReference>Assign_Non_Technical_Instructor</targetReference></connector>
+            <label>Found</label>
+        </rules>
+    </decisions>
+    <environments>Default</environments>
+    <interviewLabel>Auto Assign Instructor {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Auto Assign Instructor</label>
+    <processType>AutoLaunchedFlow</processType>
+    <recordLookups>
+        <name>Get_Course</name>
+        <label>Get Course</label>
+        <locationX>176</locationX>
+        <locationY>158</locationY>
+        <connector><targetReference>Route_By_Course_Category</targetReference></connector>
+        <filterLogic>and</filterLogic>
+        <filters><field>Id</field><operator>EqualTo</operator><value><elementReference>$Record.Course__c</elementReference></value></filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>course__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_Technical_Instructor</name>
+        <label>Get Technical Instructor</label>
+        <locationX>308</locationX>
+        <locationY>50</locationY>
+        <connector><targetReference>Technical_Instructor_Found</targetReference></connector>
+        <filterLogic>and</filterLogic>
+        <filters><field>Instructor_Code__c</field><operator>EqualTo</operator><value><stringValue>INSTR_A</stringValue></value></filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Instructor__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_Language_Instructor</name>
+        <label>Get Language Instructor</label>
+        <locationX>308</locationX>
+        <locationY>250</locationY>
+        <connector><targetReference>Language_Instructor_Found</targetReference></connector>
+        <filterLogic>and</filterLogic>
+        <filters><field>Instructor_Code__c</field><operator>EqualTo</operator><value><stringValue>INSTR_B</stringValue></value></filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Instructor__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordLookups>
+        <name>Get_Non_Technical_Instructor</name>
+        <label>Get Non-Technical Instructor</label>
+        <locationX>308</locationX>
+        <locationY>450</locationY>
+        <connector><targetReference>Non_Technical_Instructor_Found</targetReference></connector>
+        <filterLogic>and</filterLogic>
+        <filters><field>Instructor_Code__c</field><operator>EqualTo</operator><value><stringValue>INSTR_C</stringValue></value></filters>
+        <getFirstRecordOnly>true</getFirstRecordOnly>
+        <object>Instructor__c</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordUpdates>
+        <name>Assign_Technical_Instructor</name>
+        <label>Assign Technical Instructor</label>
+        <locationX>572</locationX>
+        <locationY>50</locationY>
+        <filterLogic>and</filterLogic>
+        <filters><field>Id</field><operator>EqualTo</operator><value><elementReference>$Record.Id</elementReference></value></filters>
+        <inputAssignments><field>Instructor__c</field><value><elementReference>Get_Technical_Instructor.Id</elementReference></value></inputAssignments>
+        <object>Enrollment__c</object>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Assign_Language_Instructor</name>
+        <label>Assign Language Instructor</label>
+        <locationX>572</locationX>
+        <locationY>250</locationY>
+        <filterLogic>and</filterLogic>
+        <filters><field>Id</field><operator>EqualTo</operator><value><elementReference>$Record.Id</elementReference></value></filters>
+        <inputAssignments><field>Instructor__c</field><value><elementReference>Get_Language_Instructor.Id</elementReference></value></inputAssignments>
+        <object>Enrollment__c</object>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Assign_Non_Technical_Instructor</name>
+        <label>Assign Non-Technical Instructor</label>
+        <locationX>572</locationX>
+        <locationY>450</locationY>
+        <filterLogic>and</filterLogic>
+        <filters><field>Id</field><operator>EqualTo</operator><value><elementReference>$Record.Id</elementReference></value></filters>
+        <inputAssignments><field>Instructor__c</field><value><elementReference>Get_Non_Technical_Instructor.Id</elementReference></value></inputAssignments>
+        <object>Enrollment__c</object>
+    </recordUpdates>
+    <start>
+        <connector><targetReference>Get_Course</targetReference></connector>
+        <filterFormula>OR(ISNEW(), ISCHANGED(Course__c))</filterFormula>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
+        <object>Enrollment__c</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ApprovalProcess xmlns="http://soap.sforce.com/2006/04/metadata">
+    <active>true</active>
+    <allowRecall>true</allowRecall>
+    <allowedSubmitters>
+        <type>owner</type>
+    </allowedSubmitters>
+    <approvalPageFields>
+        <field>Name</field>
+        <field>Student__c</field>
+        <field>Course__c</field>
+        <field>Enrollment_Status__c</field>
+        <field>Fees_Paid__c</field>
+        <field>Owner</field>
+    </approvalPageFields>
+    <approvalStep>
+        <allowDelegate>false</allowDelegate>
+        <assignedApprover>
+            <approver>
+                <name>Training_Manager</name>
+                <type>queue</type>
+            </approver>
+            <whenMultipleApprovers>FirstResponse</whenMultipleApprovers>
+        </assignedApprover>
+        <label>Training Manager Approval</label>
+        <name>Training_Manager_Approval</name>
+    </approvalStep>
+    <enableMobileDeviceAccess>false</enableMobileDeviceAccess>
+    <entryCriteria>
+        <formula>AND(ISPICKVAL(Enrollment_Status__c, "Requested"), Fees_Paid__c = TRUE)</formula>
+    </entryCriteria>
+    <finalApprovalActions>
+        <action>
+            <name>Set_Enrollment_Status_Approved</name>
+            <type>FieldUpdate</type>
+        </action>
+    </finalApprovalActions>
+    <finalApprovalRecordLock>true</finalApprovalRecordLock>
+    <finalRejectionActions>
+        <action>
+            <name>Set_Enrollment_Status_Rejected</name>
+            <type>FieldUpdate</type>
+        </action>
+    </finalRejectionActions>
+    <finalRejectionRecordLock>false</finalRejectionRecordLock>
+    <label>Approval Enrollment Request</label>
+    <processOrder>1</processOrder>
+    <recordEditability>AdminOnly</recordEditability>
+    <showApprovalHistory>true</showApprovalHistory>
+</ApprovalProcess>

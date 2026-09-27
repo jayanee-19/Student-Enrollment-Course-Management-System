@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fieldPermissions><editable>true</editable><field>Enrollment__c.Comments__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>true</editable><field>Enrollment__c.Course__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>true</editable><field>Enrollment__c.Enrollment_Date__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>true</editable><field>Enrollment__c.Fees_Paid__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>true</editable><field>Enrollment__c.Instructor__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>true</editable><field>Enrollment__c.Previous_Enrollment__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>true</editable><field>Enrollment__c.Re_Enrollment_Reason__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>true</editable><field>Enrollment__c.Student__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>true</editable><field>Enrollment__c.Total_Amount__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>false</editable><field>Student__c.Enrollment_Status__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>false</editable><field>Student__c.Status__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>false</editable><field>Student__c.address__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>false</editable><field>Student__c.e_mail__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>false</editable><field>Student__c.Fees_paid__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>false</editable><field>Student__c.phone__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>false</editable><field>Student__c.Serial_no__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>false</editable><field>course__c.Category__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>false</editable><field>course__c.FEES__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>false</editable><field>course__c.department__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>false</editable><field>course__c.Description__c</field><readable>true</readable></fieldPermissions>
+    <label>Enrollment Officer Access</label>
+    <objectPermissions><allowCreate>true</allowCreate><allowDelete>false</allowDelete><allowEdit>true</allowEdit><allowRead>true</allowRead><modifyAllRecords>false</modifyAllRecords><object>Enrollment__c</object><viewAllRecords>false</viewAllRecords></objectPermissions>
+    <objectPermissions><allowCreate>false</allowCreate><allowDelete>false</allowDelete><allowEdit>false</allowEdit><allowRead>true</allowRead><modifyAllRecords>false</modifyAllRecords><object>Student__c</object><viewAllRecords>false</viewAllRecords></objectPermissions>
+    <objectPermissions><allowCreate>false</allowCreate><allowDelete>false</allowDelete><allowEdit>false</allowEdit><allowRead>true</allowRead><modifyAllRecords>false</modifyAllRecords><object>course__c</object><viewAllRecords>false</viewAllRecords></objectPermissions>
+    <recordTypeVisibilities><recordType>Enrollment__c.New_Enrollment</recordType><visible>true</visible></recordTypeVisibilities>
+    <recordTypeVisibilities><recordType>Enrollment__c.Re_Enrollment</recordType><visible>true</visible></recordTypeVisibilities>
+</PermissionSet>

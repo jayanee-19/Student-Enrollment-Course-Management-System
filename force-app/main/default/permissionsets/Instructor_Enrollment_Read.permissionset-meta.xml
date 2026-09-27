@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fieldPermissions><editable>false</editable><field>Enrollment__c.Comments__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>false</editable><field>Enrollment__c.Course__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>false</editable><field>Enrollment__c.Enrollment_Date__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>false</editable><field>Enrollment__c.Fees_Paid__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>false</editable><field>Enrollment__c.Instructor__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>false</editable><field>Enrollment__c.Student__c</field><readable>true</readable></fieldPermissions>
+    <fieldPermissions><editable>false</editable><field>Enrollment__c.Total_Amount__c</field><readable>true</readable></fieldPermissions>
+    <label>Instructor Enrollment Read</label>
+    <objectPermissions><allowCreate>false</allowCreate><allowDelete>false</allowDelete><allowEdit>false</allowEdit><allowRead>true</allowRead><modifyAllRecords>false</modifyAllRecords><object>Enrollment__c</object><viewAllRecords>false</viewAllRecords></objectPermissions>
+</PermissionSet>

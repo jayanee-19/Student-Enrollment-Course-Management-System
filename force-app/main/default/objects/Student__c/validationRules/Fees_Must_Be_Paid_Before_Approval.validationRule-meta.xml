@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Fees_Must_Be_Paid_Before_Approval</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(
+  ISPICKVAL(Enrollment_Status__c, &quot;Approved&quot;),
+  Fees_paid__c = FALSE
+)</errorConditionFormula>
+    <errorMessage>Fees must be paid before approving an enrollment</errorMessage>
+</ValidationRule>
