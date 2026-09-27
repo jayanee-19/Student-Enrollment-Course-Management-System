@@ -172,7 +172,6 @@ The following screenshots are stored in [`screenshots/`](screenshots/):
 │   ├── reports/             # SECMS reports
 │   ├── tabs/                # Custom object tabs
 │   └── workflows/           # Enrollment status field updates
-├── scripts/                 # Sample SOQL and Apex script
 ├── screenshots/             # Project screenshots
 ├── package.json             # JavaScript development tooling scripts
 └── sfdx-project.json        # Salesforce DX project configuration
